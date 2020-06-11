@@ -2,6 +2,10 @@
 
 Annotations and code snippets in R.
 
+## License
+
+All source code in this repository is available under the [GPLv3](LICENSE) License.
+
 ## Description
 My personal annotations and code snippets in R. It’s a material to use as 
 reference when coding in R.
