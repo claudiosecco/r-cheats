@@ -1,0 +1,57 @@
+---
+title: Tidy-up data in R
+author: My personal knowledge base
+output: 
+  html_document:
+    theme: sandstone
+    css: custom.css
+    includes:
+      after_body: footer.html
+---
+
+<style>
+body{
+  font-size: 16px;
+  line-height: 24px;
+}
+.main-container {
+  max-width: 1200px;
+}
+</style>
+
+## General
+Excel alike pivot table:
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+library(tidyr)
+
+council_name <- c("Barking and Dagenham","Barking and Dagenham",
+                  "Barking and Dagenham","Barking and Dagenham",
+                  "Barking and Dagenham","Barking and Dagenham",
+                  "Barking and Dagenham","Barking and Dagenham",
+                  "Barnet","Barnet")
+period <- c("1st 2006", "1st 2006", "1st 2006", "1st 2006", "2nd 2006", 
+            "2nd 2006", "2nd 2006", "2nd 2006", "1st 2006", "1st 2006") 
+category <- c ("glass", "fridges", "paper", "glass", "glass", "fridges", 
+               "paper", "glass", "glass", "fridges")
+data <- c(333, 222, 100, 98, 450, 540, 33, 450, 560, 120)
+category2 <- c ("collected", "collected", "collected", "no donors", 
+                "collected", "collected", "collected", "no donors", 
+                "collected", "collected")
+df <- data.frame (council_name, period, category, category2, data)
+df
+
+df %>%
+  pivot_wider(id_cols = c(council_name,period),
+              names_from = c(category, category2),
+              values_from = data,
+              values_fn = sum)
+```
+
+Useful way to get a summary of aggregated data:
+
+```{r}
+stats::xtabs(data ~ ., df)
+```
+

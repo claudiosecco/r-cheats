@@ -1,0 +1,39 @@
+---
+title: Statistics in R
+author: My personal knowledge base
+output: 
+  html_document:
+    theme: sandstone
+    css: custom.css
+    includes:
+      after_body: footer.html
+---
+
+<style>
+body{
+  font-size: 16px;
+  line-height: 24px;
+}
+.main-container {
+  max-width: 1200px;
+}
+</style>
+
+## Linear models
+Basic prediction from a linear model:
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+
+snake_river_visits <- readRDS('data/snake_river_visits.rds')
+str(snake_river_visits)
+snake_river_explanatory <- readRDS('data/snake_river_explanatory.rds')
+str(snake_river_explanatory)
+
+model <- lm(n_visits ~ gender + income + travel, snake_river_visits)
+
+snake_river_explanatory %>%
+  mutate(predicted_n_visits = predict(model, .))%>%
+  arrange(desc(predicted_n_visits))
+```
+
