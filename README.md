@@ -9,4 +9,4 @@ reference when coding in R.
 In conjunction with public cheat-sheets, is a good helper to avoid memorize 
 everything.
 
-[Click here](#) to view the page.
+[Click here](https://claudiosecco.github.io/r-cheats/) to view the page.
