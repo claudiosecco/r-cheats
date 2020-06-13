@@ -403,9 +403,9 @@ body{
 <p>The objective of this document is to be a reference for topics about the R programming language itself, not so much about statistics or data manipulation.</p>
 <p>It’s a work in progress and the first example below is good to demonstrate the kind of matter that will be treated here.</p>
 </div>
-<div id="notes-and-sinippets" class="section level2">
-<h2>Notes and sinippets</h2>
-<p>The code below was taken from a <a href="https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left">StackOverflow topic</a> and demonstrates how to make a indirect reference to ‘key = value’ arguments in dplyr functions:</p>
+<div id="dplyr---indirect-references" class="section level2">
+<h2>Dplyr - indirect references</h2>
+<p>The code below demonstrates how to make an indirect reference to ‘key = value’ arguments in dplyr functions:</p>
 <pre class="r"><code>suppressPackageStartupMessages(library(dplyr))
 
 cols = names(iris)[2:4]  # select remaining columns 
@@ -426,6 +426,24 @@ iris %&gt;%
 ## 1 setosa             5.01         3.3          1.4         0.2
 ## 2 versicolor         5.94         2.8          4.1         1.3
 ## 3 virginica          6.59         3            5.1         1.8</code></pre>
+<p>(<a href="https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left" class="uri">https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left</a>)</p>
+</div>
+<div id="arguments-validation" class="section level2">
+<h2>Arguments validation</h2>
+<p>The <code>assertive</code> package comes with several functions to validate arguments within functions.</p>
+<pre class="r"><code>library(assertive)
+
+calc_harmonic_mean &lt;- function(x, na.rm = FALSE) {
+  assert_is_numeric(x)
+  if(any(is_non_positive(x), na.rm = TRUE)) {
+    stop(&quot;x contains non-positive values, so the harmonic mean makes no sense.&quot;)
+  }
+  na.rm &lt;- coerce_to(use_first(na.rm), target_class = &quot;logical&quot;)
+  x %&gt;%
+    get_reciprocal() %&gt;%
+    mean(na.rm = na.rm) %&gt;%
+    get_reciprocal()
+}</code></pre>
 </div>
 
 <footer>

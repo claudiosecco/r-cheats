@@ -26,11 +26,9 @@ programming language itself, not so much about statistics or data manipulation.
 It's a work in progress and the first example below is good to demonstrate the
 kind of matter that will be treated here.
 
-## Notes and sinippets
-The code below was taken from a [StackOverflow topic](
-https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left
-) and demonstrates how to make
-a indirect reference to 'key = value' arguments in dplyr functions:
+## Dplyr - indirect references
+The code below demonstrates how to make an indirect reference to 'key = value'
+arguments in dplyr functions:
 
 ```{r}
 suppressPackageStartupMessages(library(dplyr))
@@ -46,5 +44,26 @@ names(summary_vars) = cols  # new column names (set old names)
 iris %>%  
   group_by(Species) %>%
   summarise(Sepal.Length = mean(Sepal.Length), !!!summary_vars)  # open expressions
+```
+(https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left)
+
+## Arguments validation
+The `assertive` package comes with several functions to validate arguments 
+within functions.
+
+```{r eval=FALSE, include=TRUE}
+library(assertive)
+
+calc_harmonic_mean <- function(x, na.rm = FALSE) {
+  assert_is_numeric(x)
+  if(any(is_non_positive(x), na.rm = TRUE)) {
+    stop("x contains non-positive values, so the harmonic mean makes no sense.")
+  }
+  na.rm <- coerce_to(use_first(na.rm), target_class = "logical")
+  x %>%
+    get_reciprocal() %>%
+    mean(na.rm = na.rm) %>%
+    get_reciprocal()
+}
 ```
 
