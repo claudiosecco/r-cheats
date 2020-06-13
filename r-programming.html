@@ -439,11 +439,15 @@ calc_harmonic_mean &lt;- function(x, na.rm = FALSE) {
     stop(&quot;x contains non-positive values, so the harmonic mean makes no sense.&quot;)
   }
   na.rm &lt;- coerce_to(use_first(na.rm), target_class = &quot;logical&quot;)
-  x %&gt;%
-    get_reciprocal() %&gt;%
-    mean(na.rm = na.rm) %&gt;%
-    get_reciprocal()
-}</code></pre>
+  
+  print(1 / mean(1 / x, na.rm = na.rm))
+}
+
+calc_harmonic_mean(1:5, na.rm = 1:5)</code></pre>
+<pre><code>## Warning: Only the first value of na.rm (= 1) will be used.</code></pre>
+<pre><code>## Warning: Coercing use_first(na.rm) to class 'logical'.</code></pre>
+<pre><code>## [1] 2.189781</code></pre>
+<p>(<a href="https://www.datacamp.com/courses/introduction-to-writing-functions-in-r" class="uri">https://www.datacamp.com/courses/introduction-to-writing-functions-in-r</a>)</p>
 </div>
 
 <footer>

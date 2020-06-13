@@ -51,7 +51,7 @@ iris %>%
 The `assertive` package comes with several functions to validate arguments 
 within functions.
 
-```{r eval=FALSE, include=TRUE}
+```{r}
 library(assertive)
 
 calc_harmonic_mean <- function(x, na.rm = FALSE) {
@@ -60,10 +60,10 @@ calc_harmonic_mean <- function(x, na.rm = FALSE) {
     stop("x contains non-positive values, so the harmonic mean makes no sense.")
   }
   na.rm <- coerce_to(use_first(na.rm), target_class = "logical")
-  x %>%
-    get_reciprocal() %>%
-    mean(na.rm = na.rm) %>%
-    get_reciprocal()
+  
+  print(1 / mean(1 / x, na.rm = na.rm))
 }
-```
 
+calc_harmonic_mean(1:5, na.rm = 1:5)
+```
+(https://www.datacamp.com/courses/introduction-to-writing-functions-in-r)
