@@ -3,7 +3,7 @@ title: R programming
 author: My personal knowledge base and code snippets
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
@@ -19,14 +19,20 @@ body{
 }
 </style>
 
-## Description
+###### [Back to home](index.html)
+
+### Contents
+[Description](#description)  
+[Dplyr - indirect references](#dplyr-indirect-references)
+
+### Description {#description}
 The objective of this document is to be a reference for topics about the R
 programming language itself, not so much about statistics or data manipulation.
 
 It's a work in progress and the first example below is good to demonstrate the
 kind of matter that will be treated here.
 
-## Dplyr - indirect references
+### Dplyr - indirect references {#dplyr-indirect-references}
 The code below demonstrates how to make an indirect reference to 'key = value'
 arguments in dplyr functions:
 
@@ -45,4 +51,4 @@ iris %>%
   group_by(Species) %>%
   summarise(Sepal.Length = mean(Sepal.Length), !!!summary_vars)  # open expressions
 ```
-(https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left)
+###### (https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left)

@@ -1,17 +1,12 @@
 ---
 title: Writing Efficient R Code 
-author: My personal notes from DataCamp course
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 <style>
 body{
@@ -23,8 +18,24 @@ body{
 }
 </style>
 
-## The Art of Benchmarking
-### General
+My personal notes from 
+[DataCamp's course](https://www.datacamp.com/courses/writing-efficient-r-code)
+
+###### [Back to home](index.html)
+
+## Contents
+- [The Art of Benchmarking](#the-art-of-benchmarking)  
+-- [General](#general)  
+-- [Benchmarking](#benchmarking)  
+- [Fine Tuning: Efficient Base R](#fine-tunning)  
+-- [Memory allocation](#memory-allocation)  
+-- [Vectorize your code](#vectorize-your-code)  
+-- [Data frames vs matrices](#data-frames-vs-matrices)  
+- [Diagnosing Problems: Code Profiling](#diagnosing-problems)  
+- [Turbo Charged Code: Parallel Programming](#turbo-charged-code)
+
+## The Art of Benchmarking {#the-art-of-benchmarking}
+### General {#general}
 It's unfair to compare R velocity with C velocity. Though C running code time is 
 faster, R writing code is simpler and faster.
 
@@ -41,7 +52,7 @@ Simply keeping R up to date, is the first step to optimization.
 version
 ```
 
-### Benchmarking
+### Benchmarking {#benchmarking}
 Read datasets files is a common task that we want to optimize. R provides a
 native format ```.rds``` that, if used without compression, is suitable for fast
 reading and writing.
@@ -93,8 +104,8 @@ plot(res)
 upload_results(res)
 ```
 
-## Fine Tuning: Efficient Base R 
-### Memory allocation
+## Fine Tuning: Efficient Base R {#fine-tunning}
+### Memory allocation {#memory-allocation}
 Avoid growing a vector. Prefer to define it previously with correct
 size and type. Each time you increase the size of a vector, R requests the OS 
 for more memory, which causes the code run slowly.
@@ -123,7 +134,7 @@ system.time(res_grow <- growing(n))
 system.time(res_allocate <- pre_allocate(n))
 ```
 
-### Vectorize your code
+### Vectorize your code {#vectorize-your-code}
 Calling an native R function eventually leads to C or FORTRAN code, which are 
 heavily optimized.
 
@@ -141,7 +152,7 @@ microbenchmark(
   times = 10)
 ```
 
-### Data frames vs matrices
+### Data frames vs matrices {#data-frames-vs-matrices}
 Work with matrices whenever possible to optimize your code. Matrices provide
 better performance, mainly when extracting rows.
 
@@ -156,11 +167,11 @@ microbenchmark(mat[,1], df[,1])
 microbenchmark(mat[1,], df[1,])
 ```
 
-## Diagnosing Problems: Code Profiling
+## Diagnosing Problems: Code Profiling {#diagnosing-problems}
 Use Profvis package to profile your code and find bottlenecks.
 
 ```{r}
-library("profvis")
+library(profvis)
 profvis({
   data(movies, package = "ggplot2movies") # Load data
   braveheart <- movies[7288,]
@@ -174,7 +185,7 @@ profvis({
   })
 ```
 
-## Turbo Charged Code: Parallel Programming
+## Turbo Charged Code: Parallel Programming {#turbo-charged-code}
 Parallel package allow processing in multiple cores.
 Not every routine can benefit, or even be executed, in parallel. Only loops with
 no dependency among iterations.

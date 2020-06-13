@@ -3,7 +3,7 @@ title: Statistics in R
 author: My personal knowledge base
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
@@ -19,7 +19,13 @@ body{
 }
 </style>
 
-## Linear models
+###### [Back to home](index.html)
+
+### Contents
+[Linear models](#linear-models)  
+[Quantiles](#quantiles)
+
+### Linear models {#linear-models}
 Basic prediction from a linear model:
 
 ```{r}
@@ -37,7 +43,7 @@ snake_river_explanatory %>%
   arrange(desc(predicted_n_visits))
 ```
 
-## Quantiles
+### Quantiles {#quantiles}
 A custom function ```cut_by_quantile()``` that converts a numeric vector into a categorical variable where quantiles define the cut points:
 
 ```{r}

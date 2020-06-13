@@ -1,9 +1,8 @@
 ---
 title: Web data in R
-author: My personal notes taken from DataCamp's course 
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
@@ -19,8 +18,22 @@ body{
 }
 </style>
 
-## Downloading Files and Using API Clients
-### Introduction
+My personal notes from 
+[DataCamp's course](https://www.datacamp.com/courses/working-with-web-data-in-r)
+
+###### [Back to home](index.html)
+
+## Contents
+- [Downloading Files and Using API Clients](#api-clients)  
+-- [Introduction](#introduction)  
+-- [APIs](#apis)  
+- [Using httr to interact with APIs directly](#httr)  
+- [Handling JSON and XML](#json-xml)  
+- [Web scraping with XPATHs](#web-scraping)  
+
+
+## Downloading Files and Using API Clients {#api-clients}
+### Introduction {#introduction}
 Read functions like read.csv(), real.delim() can accept urls in place of local
 paths.
 You can use download.file() to save a local copy.
@@ -36,7 +49,7 @@ download.file(url = csv_url, destfile = 'data/feed_data.csv')
 csv_data <- read.csv('data/feed_data.csv')
 ```
 
-### APIs
+### APIs {#apis}
 R has several packages with APIs implementations. Google 'CRAN <website>'. 
 
 Example with pageviews: client for Wikipedia's API
@@ -53,7 +66,7 @@ hadley_pageviews <- article_pageviews(project = "en.wikipedia",
 str(hadley_pageviews)
 ```
 
-## Using httr to interact with APIs directly
+## Using httr to interact with APIs directly {#httr}
 Package httr helps to interact directly with APIs.
 
 ```{r}
@@ -139,7 +152,7 @@ get_pageviews <- function(article_title){
 }
 ```
 
-## Handling JSON and XML
+## Handling JSON and XML {#json-xml}
 toJSON, fromJSON {jsonlite}:
 
 ```{r}
@@ -221,7 +234,7 @@ df <- data.frame(title =
 df
 ```
 
-## Web scraping with XPATHs
+## Web scraping with XPATHs {#web-scraping}
 Use package rvest to extract data from web html pages.
 
 ```{r}

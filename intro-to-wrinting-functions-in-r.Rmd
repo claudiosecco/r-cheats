@@ -1,9 +1,8 @@
 ---
 title: Introduction to writing functions in R 
-author: My personal notes from DataCamp course
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
@@ -19,7 +18,10 @@ body{
 }
 </style>
 
-(https://www.datacamp.com/courses/introduction-to-writing-functions-in-r)
+My personal notes from 
+[DataCamp's course](https://www.datacamp.com/courses/introduction-to-writing-functions-in-r)
+
+###### [Back to home](index.html)
 
 ### Contents
 [Arguments validation](#arguments-validation)  

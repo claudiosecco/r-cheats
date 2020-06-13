@@ -3,7 +3,7 @@ title: Tidy-up data in R
 author: My personal knowledge base
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
@@ -19,7 +19,13 @@ body{
 }
 </style>
 
-## General
+###### [Back to home](index.html)
+
+### Contents
+[Excel Pivot Table](#excel-pivot-table)  
+[Console summary of aggregated data](#console-summary)
+
+### Excel Pivot Table {#excel-pivot-table}
 Excel alike pivot table:
 
 ```{r}
@@ -48,6 +54,8 @@ df %>%
               values_from = data,
               values_fn = sum)
 ```
+
+### Console summary of aggregated data {#console-summary}
 
 Useful way to get a summary of aggregated data:
 

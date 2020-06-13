@@ -3,7 +3,7 @@ title: R Cheats
 author: Annotations and code snippets in R
 output: 
   html_document:
-    theme: sandstone
+    theme: readable
     css: custom.css
     includes:
       after_body: footer.html
