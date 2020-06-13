@@ -46,24 +46,3 @@ iris %>%
   summarise(Sepal.Length = mean(Sepal.Length), !!!summary_vars)  # open expressions
 ```
 (https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left)
-
-## Arguments validation
-The `assertive` package comes with several functions to validate arguments 
-within functions.
-
-```{r}
-library(assertive)
-
-calc_harmonic_mean <- function(x, na.rm = FALSE) {
-  assert_is_numeric(x)
-  if(any(is_non_positive(x), na.rm = TRUE)) {
-    stop("x contains non-positive values, so the harmonic mean makes no sense.")
-  }
-  na.rm <- coerce_to(use_first(na.rm), target_class = "logical")
-  
-  print(1 / mean(1 / x, na.rm = na.rm))
-}
-
-calc_harmonic_mean(1:5, na.rm = 1:5)
-```
-(https://www.datacamp.com/courses/introduction-to-writing-functions-in-r)

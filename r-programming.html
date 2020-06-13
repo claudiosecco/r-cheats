@@ -428,27 +428,6 @@ iris %&gt;%
 ## 3 virginica          6.59         3            5.1         1.8</code></pre>
 <p>(<a href="https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left" class="uri">https://stackoverflow.com/questions/62308729/summarizing-one-way-then-another-for-whats-left</a>)</p>
 </div>
-<div id="arguments-validation" class="section level2">
-<h2>Arguments validation</h2>
-<p>The <code>assertive</code> package comes with several functions to validate arguments within functions.</p>
-<pre class="r"><code>library(assertive)
-
-calc_harmonic_mean &lt;- function(x, na.rm = FALSE) {
-  assert_is_numeric(x)
-  if(any(is_non_positive(x), na.rm = TRUE)) {
-    stop(&quot;x contains non-positive values, so the harmonic mean makes no sense.&quot;)
-  }
-  na.rm &lt;- coerce_to(use_first(na.rm), target_class = &quot;logical&quot;)
-  
-  print(1 / mean(1 / x, na.rm = na.rm))
-}
-
-calc_harmonic_mean(1:5, na.rm = 1:5)</code></pre>
-<pre><code>## Warning: Only the first value of na.rm (= 1) will be used.</code></pre>
-<pre><code>## Warning: Coercing use_first(na.rm) to class 'logical'.</code></pre>
-<pre><code>## [1] 2.189781</code></pre>
-<p>(<a href="https://www.datacamp.com/courses/introduction-to-writing-functions-in-r" class="uri">https://www.datacamp.com/courses/introduction-to-writing-functions-in-r</a>)</p>
-</div>
 
 <footer>
   <small>

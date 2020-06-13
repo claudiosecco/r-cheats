@@ -29,6 +29,8 @@ everything.
 ## Index
 - [Efficient R code](efficient-R-code.html): my personal annotations taken from
 Datacamp's course;
+- [Introduction to writing functions in R](intro-to-wrinting-functions-in-r.html)
+:my personal annotations taken from Datacamp's course;
 - [R programming](r-programming.html): notes and code snippets about R
 programming language itself, not about statistics or data manipulation (work in
 progress).

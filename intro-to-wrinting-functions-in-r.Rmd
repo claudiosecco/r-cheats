@@ -1,0 +1,105 @@
+---
+title: Introduction to writing functions in R 
+author: My personal notes from DataCamp course
+output: 
+  html_document:
+    theme: sandstone
+    css: custom.css
+    includes:
+      after_body: footer.html
+---
+
+<style>
+body{
+  font-size: 16px;
+  line-height: 24px;
+}
+.main-container {
+  max-width: 1200px;
+}
+</style>
+
+(https://www.datacamp.com/courses/introduction-to-writing-functions-in-r)
+
+### Contents
+[Arguments validation](#arguments-validation)  
+[Returning multiple values from functions](#returning-multiple-values)
+
+### Arguments validation {#arguments-validation}
+The `assertive` package comes with several functions to validate arguments 
+within functions.
+
+```{r}
+library(assertive)
+
+calc_harmonic_mean <- function(x, na.rm = FALSE) {
+  assert_is_numeric(x)
+  if(any(is_non_positive(x), na.rm = TRUE)) {
+    stop("x contains non-positive values, so the harmonic mean makes no sense.")
+  }
+  na.rm <- coerce_to(use_first(na.rm), target_class = "logical")
+  
+  print(1 / mean(1 / x, na.rm = na.rm))
+}
+
+calc_harmonic_mean(1:5, na.rm = 1:5)
+```
+
+### Returning multiple values from functions {#returning-multiple-values}
+Functions can only return one value. If you want to return multiple things, then
+you can store them all in a list.
+
+If users want to have the list items as separate variables, they can assign each
+list element to its own variable using `zeallot`'s multi-assignment operator, `%<-%`.
+
+Create model object to use in the examples:
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+
+snake_river_visits <- readRDS('data/snake_river_visits.rds')
+model <- lm(n_visits ~ gender + income + travel, snake_river_visits)
+```
+
+Returning a list a spliting items via %<-% operator:
+
+```{r}
+library(broom)
+library(zeallot)
+
+groom_model <- function(model) {
+  list(
+    model = glance(model),
+    coefficients = tidy(model),
+    observations = augment(model)
+  )
+}
+
+# Call groom_model on model, assigning to 3 variables
+c(mdl, cff, obs) %<-% groom_model(model)
+
+# See these individual variables
+mdl; cff; obs
+```
+
+Sometimes you want the return multiple things from a function, but you want the
+result to have a particular class (for example, a data frame or a numeric
+vector), so returning a list isn't appropriate. This is common when you have a
+result plus metadata about the result. (Metadata is "data about the data". For
+example, it could be the file a dataset was loaded from, or the username of the
+person who created the variable, or the number of iterations for an algorithm to
+converge.)
+
+```{r}
+pipeable_plot <- function(data, formula) {
+  plot(formula, data)
+  attr(data, 'formula') <- formula
+  invisible(data)
+}
+
+plt_dist_vs_speed <- cars %>% 
+  pipeable_plot(dist ~ speed)
+
+str(plt_dist_vs_speed)
+```
+
