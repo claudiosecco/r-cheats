@@ -2,7 +2,7 @@
 title: Web data in R
 output: 
   html_document:
-    theme: readable
+    theme: default
     css: custom.css
     includes:
       after_body: footer.html

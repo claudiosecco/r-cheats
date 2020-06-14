@@ -3,7 +3,7 @@ title: R Cheats
 author: Annotations and code snippets in R
 output: 
   html_document:
-    theme: readable
+    theme: default
     css: custom.css
     includes:
       after_body: footer.html
@@ -28,14 +28,14 @@ everything.
 
 ## Index
 - [Efficient R code](efficient-R-code.html): my personal annotations taken from
-Datacamp's course;
+Datacamp's course.
 - [Introduction to writing functions in R](intro-to-wrinting-functions-in-r.html)
-:my personal annotations taken from Datacamp's course;
+:my personal annotations taken from Datacamp's course.
 - [R programming](r-programming.html): notes and code snippets about R
 programming language itself, not about statistics or data manipulation (work in
 progress).
 - [Statistics in R](statistics-in-R.html): a reference about statistics in
-R (work in progress);
+R (work in progress).
 - [Tidy data](tidy-data.html): useful code snippets to tidy data up (work in
 progress).
 - [Web data in R](web-data-in-R.html): my personal annotations taken from

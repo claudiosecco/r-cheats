@@ -3,7 +3,7 @@ title: Statistics in R
 author: My personal knowledge base
 output: 
   html_document:
-    theme: readable
+    theme: default
     css: custom.css
     includes:
       after_body: footer.html
@@ -22,9 +22,12 @@ body{
 ###### [Back to home](index.html)
 
 ### Contents
-[Linear models](#linear-models)  
-[Quantiles](#quantiles)
+- [Models](#models)  
+-- [Linear models](#linear-models)  
+-- [Non-linear models with GAM](#gam)  
+- [Quantiles](#quantiles)
 
+## Models {#models}
 ### Linear models {#linear-models}
 Basic prediction from a linear model:
 
@@ -42,8 +45,62 @@ snake_river_explanatory %>%
   mutate(predicted_n_visits = predict(model, .))%>%
   arrange(desc(predicted_n_visits))
 ```
+###### (https://learn.datacamp.com/courses/introduction-to-writing-functions-in-r)
 
-### Quantiles {#quantiles}
+### Non-linear models with GAM {#gam}
+When you draw a smooth trend line in plot using `ggplot2::geom_smooth()`, 
+you're, in fact, using a generalized additive model (GAM). This sort of model 
+is ideal for fitting nonlinear curves. You can use `mgcv::gam()` to run the 
+model. Thesyntax for running this GAM takes the following form:
+
+```
+gam(response ~ s(explanatory_var1) + explanatory_var2, data = dataset)
+```
+
+Here, `s()` means "make the variable smooth", where smooth very roughly means 
+nonlinear.
+
+```{r}
+library(ggplot2)
+
+df <- readRDS('data/nass.corn.rds')
+states_data <- readRDS('data/states.rds')
+
+# get BEA region of each state
+df <- df %>%
+  inner_join(states_data, by = c('state' = 'name'))
+
+ggplot(df, aes(year, yield_bushels_per_acre)) +
+  geom_line(aes(group = state)) +
+  geom_smooth() +
+  facet_wrap(vars(bea_region))
+```
+
+We can see in the plots that the trend lines fit well. So we can use GAM model
+and make predictions.
+
+```{r}
+suppressPackageStartupMessages(library(mgcv))
+
+bea_regions <- readRDS('data/BEA_regions.rds')$region_name
+
+model <- gam(yield_bushels_per_acre ~ s(year) + bea_region, data = df)
+
+predict_this <- data.frame(
+  year = 2050,
+  bea_region = bea_regions
+)
+
+# Predict the yield
+pred_yield <- predict(model, predict_this, type = "response")
+
+predict_this %>%
+  mutate(pred_yield = pred_yield)
+```
+###### (https://learn.datacamp.com/courses/introduction-to-writing-functions-in-r)
+
+
+## Quantiles {#quantiles}
 A custom function ```cut_by_quantile()``` that converts a numeric vector into a categorical variable where quantiles define the cut points:
 
 ```{r}
