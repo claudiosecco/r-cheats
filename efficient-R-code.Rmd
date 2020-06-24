@@ -18,8 +18,10 @@ body{
 }
 </style>
 
-My personal notes from 
-[DataCamp's course](https://www.datacamp.com/courses/writing-efficient-r-code)
+My personal notes from DataCamp's courses:
+
+* [Writing Efficient R Code](https://www.datacamp.com/courses/writing-efficient-r-code)
+* [Parallel Programming in R](https://learn.datacamp.com/courses/parallel-programming-in-r)
 
 ###### [Back to home](index.html)
 
@@ -101,7 +103,7 @@ res <- benchmark_io(runs = 1, size = 5)
 plot(res)
 
 # Contribute to community
-upload_results(res)
+# upload_results(res)
 ```
 
 ## Fine Tuning: Efficient Base R {#fine-tunning}
@@ -222,5 +224,77 @@ system.time(par <- parSapply(cl, 1:no_of_games, function(i) play()))
 
 ## Stop cluster
 stopCluster(cl)
+```
+
+An excelent example using:
+
+* `foreach` loop structure
+* parallelization via `doParallel` package
+* exporting objects to clusters environments
+* opening packages in clusters environments
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+library(stringr)
+library(janeaustenr)
+library(doParallel)
+library(foreach)
+library(microbenchmark)
+
+janeausten_words <- function() {
+  # Names of the six books contained in janeaustenr
+  books <- austen_books()$book %>% unique %>% as.character
+  # Vector of words from all six books
+  words <- sapply(books, extract_words) %>% unlist
+  words
+}
+
+extract_words <- function(book_name) {
+  # extract the text of the book
+  text <- subset(austen_books(), book == book_name)$text
+  # extract words from the text and convert to lowercase
+  str_extract_all(text, boundary("word")) %>% unlist %>% tolower
+}
+
+max_frequency <- function(letter, words, min_length = 1) {
+  w <- select_words(letter, words = words, min_length = min_length)
+  frequency <- table(w)    
+  frequency[which.max(frequency)]
+}
+
+select_words <- function(letter, words, min_length = 1) {
+  min_length_words <- words[nchar(words) >= min_length]
+  grep(paste0("^", letter), min_length_words, value = TRUE)
+}
+
+# Vector of words from all six books
+words <- janeausten_words()
+
+# function that runs in parallel
+freq_doPar <- function(cores, min_length = 5) {
+  # Register a cluster of size cores
+  registerDoParallel(cores = cores)
+  
+  # foreach loop
+  foreach(let = letters, .combine = c, 
+          .export = c('max_frequency', "select_words", "words"),
+          .packages = c('janeaustenr', 'stringr')) %dopar%
+    max_frequency(let, words = words, min_length = min_length)
+}
+
+# function that runs sequentially
+freq_seq <- function(min_length = 5) {
+  foreach(let = letters, .combine = c) %do%
+    max_frequency(let, words = words, min_length = min_length)
+}
+
+microbenchmark(
+  { res_seq <- freq_seq() },
+  { res_par <- freq_doPar(2) },
+  times = 1, 
+  unit = 's')
+
+all.equal(res_par, res_seq)
+
 ```
 
